@@ -1,107 +1,122 @@
+// ServicioGet.ts
+type Json = any;
+
+function ensureJsonContentType(res: Response) {
+  const ct = (res.headers.get('content-type') || '').toLowerCase();
+  // Acepta application/json con charset
+  return ct.includes('application/json');
+}
+
+async function parseJsonSafe(res: Response) {
+  // Si es 204/205 o no hay contenido, devuelve null
+  if (res.status === 204 || res.status === 205) return null;
+
+  const text = await res.text();
+  if (!text) return null;
+
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    throw new Error(
+      `El servidor no devolvió JSON válido. Content-Type="${res.headers.get('content-type')}". ` +
+      `Fragmento: ${text.slice(0, 200)}`
+    );
+  }
+}
+
 export class ServicioGet {
-    public static async peticionGet(urlServicio: string): Promise<any> {
-        const token = localStorage.getItem("TOKEN_AUTORIZACION") as string;
-        const datosEnviar = {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json; charset=UTF-8",
-                "authorization": token
-            }
-        }
+  public static async peticionGet(urlServicio: string): Promise<Json> {
+    const token = localStorage.getItem('TOKEN_AUTORIZACION') || '';
+    const headers: Record<string, string> = {
+      // Este header evita la página HTML de advertencia de ngrok
+      'ngrok-skip-browser-warning': 'true',
+      // Pedimos JSON
+      'Accept': 'application/json',
+    };
 
-        try {
-            const response = await fetch(urlServicio, datosEnviar);
-
-            // Verificar si la respuesta es exitosa
-            if (!response.ok) {
-                console.error(`Error HTTP: ${response.status} ${response.statusText}`);
-                console.error(`URL que falló: ${urlServicio}`);
-
-                // Si la respuesta no es JSON, intentar leer como texto
-                const textResponse = await response.text();
-                console.error("Respuesta del servidor:", textResponse);
-
-                throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
-            }
-
-            // Verificar el tipo de contenido
-            const contentType = response.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                const textResponse = await response.text();
-                console.error("El servidor no devolvió JSON. Respuesta:", textResponse);
-                throw new Error("El servidor no devolvió JSON válido");
-            }
-
-            const losDatos = await response.json();
-            return losDatos;
-        } catch (error) {
-            console.error("Error en petición GET:", error);
-            console.error("URL que causó el error:", urlServicio);
-            throw error;
-        }
+    // Solo añade Authorization si hay token
+    if (token) {
+      // Ajusta al formato que requiera tu backend (Bearer ...)
+      headers['Authorization'] = token.startsWith('Bearer ')
+        ? token
+        : `Bearer ${token}`;
     }
 
-    public static async peticionGetPublica(urlServicio: string): Promise<any> {
-        const datosEnviar = {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json; charset=UTF-8"
-            }
-        };
+    const opciones: RequestInit = {
+      method: 'GET',
+      headers,
+      // ¡No uses mode: 'no-cors'!
+      // credentials: 'include', // si tu API usa cookies/sesión
+    };
 
-        try {
-            const response = await fetch(urlServicio, datosEnviar);
+    try {
+      const res = await fetch(urlServicio, opciones);
 
-            // Verificar si la respuesta es exitosa
-            if (!response.ok) {
-                console.error(`Error HTTP: ${response.status} ${response.statusText}`);
-                console.error(`URL que falló: ${urlServicio}`);
+      if (!res.ok) {
+        // Lee texto para log más útil
+        const body = await res.text().catch(() => '');
+        console.error('Error HTTP:', res.status, res.statusText);
+        console.error('URL que falló:', urlServicio);
+        console.error('Respuesta del servidor:', body.slice(0, 400));
+        throw new Error(`HTTP ${res.status} ${res.statusText}`);
+      }
 
-                // Si la respuesta no es JSON, intentar leer como texto
-                const textResponse = await response.text();
-                console.error("Respuesta del servidor:", textResponse);
+      if (!ensureJsonContentType(res)) {
+        const body = await res.text().catch(() => '');
+        console.error('Respuesta no-JSON:', body.slice(0, 400));
+        throw new Error('El servidor no devolvió JSON válido');
+      }
 
-                throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
-            }
-
-            // Verificar el tipo de contenido
-            const contentType = response.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                const textResponse = await response.text();
-                console.error("El servidor no devolvió JSON. Respuesta:", textResponse);
-                throw new Error("El servidor no devolvió JSON válido");
-            }
-
-            const losDatos = await response.json();
-            return losDatos;
-        } catch (error) {
-            console.error("Error en petición GET pública:", error);
-            console.error("URL que causó el error:", urlServicio);
-            throw error;
-        }
+      return await parseJsonSafe(res);
+    } catch (error) {
+      console.error('Error en petición GET:', error);
+      console.error('URL que causó el error:', urlServicio);
+      throw error;
     }
+  }
 
-    // 🏠 Nuevo método para obtener solo casas
-    public static async obtenerCasas(urlServicio: string): Promise<any> {
-        try {
-            const datos = await this.peticionGet(urlServicio);
-            return datos.filter((vivienda: any) => vivienda.tipo === "Casa");
-        } catch (error) {
-            console.error("Error al obtener casas:", error);
-            throw error;
-        }
+  public static async peticionGetPublica(urlServicio: string): Promise<Json> {
+    const opciones: RequestInit = {
+      method: 'GET',
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+        'Accept': 'application/json',
+      },
+    };
+
+    try {
+      const res = await fetch(urlServicio, opciones);
+
+      if (!res.ok) {
+        const body = await res.text().catch(() => '');
+        console.error('Error HTTP:', res.status, res.statusText);
+        console.error('URL que falló:', urlServicio);
+        console.error('Respuesta del servidor:', body.slice(0, 400));
+        throw new Error(`HTTP ${res.status} ${res.statusText}`);
+      }
+
+      if (!ensureJsonContentType(res)) {
+        const body = await res.text().catch(() => '');
+        console.error('Respuesta no-JSON:', body.slice(0, 400));
+        throw new Error('El servidor no devolvió JSON válido');
+      }
+
+      return await parseJsonSafe(res);
+    } catch (error) {
+      console.error('Error en petición GET pública:', error);
+      console.error('URL que causó el error:', urlServicio);
+      throw error;
     }
+  }
 
-    // ServicioGet.ts
-    public static async buscarPublicacionesPorTitulo(urlServicio: string, titulo: string): Promise<any[]> {
-        const url = urlServicio.replace(':titulo', encodeURIComponent(titulo));
-        try {
-            const resultado = await this.peticionGetPublica(url);
-            return Array.isArray(resultado) ? resultado : [];
-        } catch (error) {
-            console.error("Error al buscar publicaciones:", error);
-            throw error;
-        }
-    }
+  public static async obtenerCasas(urlServicio: string): Promise<Json> {
+    const datos = await this.peticionGet(urlServicio);
+    return Array.isArray(datos) ? datos.filter((v: any) => v?.tipo === 'Casa') : [];
+  }
 
+  public static async buscarPublicacionesPorTitulo(urlServicio: string, titulo: string): Promise<any[]> {
+    const url = urlServicio.replace(':titulo', encodeURIComponent(titulo));
+    const resultado = await this.peticionGetPublica(url);
+    return Array.isArray(resultado) ? resultado : [];
+  }
 }

@@ -1,5 +1,5 @@
 export const URLS = {
-    URL_BASE: "http://localhost:3550",
+    URL_BASE: "https://35cd37d71b6d.ngrok-free.app",
     INICIAR_SESION: "/publico/accesos/signin",
     REGISTRO: "/publico/registros/user",
 

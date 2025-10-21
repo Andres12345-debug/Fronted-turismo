@@ -63,7 +63,7 @@ export const RuteoPrincipal = () => {
       {/* Área pública */}
 
 
-      <Route path="/land" element={<LazyTableroVistaPublica />}>
+      <Route path="land" element={<LazyTableroVistaPublica />}>
         <Route index element={<LazyViviendas />} />                {/* /land */}
         <Route path="welcome" element={<LazyViviendas />} />      {/* /land/welcome */}
         <Route path="publicacion/:codPublicacion" element={<LazyDetallePublicacion />} />  {/* /land/publicacion/123 */}
@@ -76,11 +76,7 @@ export const RuteoPrincipal = () => {
             <LazyBuscarResultados />
           }
         />
-
       </Route>
-
-
-
       <Route path="/login" element={<LazySesion />} />
       <Route path="/register" element={<LazyRegistro />} />
 
@@ -90,7 +86,9 @@ export const RuteoPrincipal = () => {
       </Route>
 
       {/* Obligatorias */}
-      <Route path="/" element={<Navigate to="/land" replace />} />
+      <Route path="/" element={<LazyTableroVistaPublica />}>
+        <Route index element={<LazyViviendas />} />
+      </Route>
       <Route path="*" element={<LazyError />} />
     </Routes>
   );

@@ -1,0 +1,19 @@
+# --- Configuración para React Router (Single Page App) ---
+RewriteEngine On
+RewriteBase /
+
+# Si el archivo o directorio existe, se sirve normalmente
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Si no existe (rutas de React), redirige a index.html
+RewriteRule . /index.html [L]
+
+# Opcional: evita listado de directorios
+Options -Indexes
+
+# CORS opcional (si llamas APIs externas)
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+</IfModule>

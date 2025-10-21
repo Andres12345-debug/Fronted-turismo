@@ -8,10 +8,10 @@ import { RuteoPrincipal } from './routes/RuteoPrincipal';
 
 const cargarComponente = () => (
   <div className="d-flex justify-content-center">
-    <div className="mt-3">
-      <span className="spinner-grow-sm fs-4 fw-bold text-danger"></span>
+    <div className="mt-3 text-center">
+      <div className="spinner-border text-danger fs-4" role="status"></div>
       <br />
-      <span className="text-center fst-italic fs-3 text-primary">Cargando ...</span>
+      <span className="fst-italic fs-3 text-primary">Cargando ...</span>
     </div>
   </div>
 );
@@ -19,7 +19,8 @@ const cargarComponente = () => (
 function App() {
   return (
     <ThemeContextProvider>
-      <BrowserRouter>
+      {/* 👇 El basename toma el valor de PUBLIC_URL del entorno o "/" por defecto */}
+      <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
         <ToastContainer />
         <Suspense fallback={cargarComponente()}>
           <RuteoPrincipal />

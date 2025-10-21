@@ -38,28 +38,16 @@ export const RuteoInterno = () => {
             <Route path="/listarRole" element={<LazyRoleListar/>}></Route>
             <Route path="/adminRole" element={<LazyRoleAdministrar/>}></Route>
             <Route path="/addRole" element={<LazyRoleCrear/>}></Route>
-
-
             /* Usuario */
             <Route path="/listUser" element = {<LazyUsuarioListar/>} />
             <Route path="/addUser" element = {<LazyUsuarioRegistrar/>}/>
             <Route path="/adminUser" element = {<LazyUsuarioAdmisnitrar/>} />
-
             /* Publicacion */
             <Route path="/addPublicacion" element = {<LazyPublicacionesRegistrar/>}/>
             <Route path="/adminPublicacion" element = {<LazyPublicacionAdmisnitrar/>} />
-
-
-
-
-
-
-
-            {/****TUTAS OBLIGATORIAS*********** */}
+            {/****RUTAS OBLIGATORIAS*********** */}
             <Route path="/" element={<LazyBienvenida/>}></Route>
-            <Route path="*" element={<LazyError/>}></Route>
-
-            
+            <Route path="*" element={<LazyError/>}></Route>       
 
         </Routes>
     )

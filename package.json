@@ -2,6 +2,7 @@
   "name": "front_arriendos_react",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://sencaptur.free.nf",
   "proxy": "https://c3330e32a8b2.ngrok-free.app",
   "dependencies": {
     "@emotion/react": "^11.14.0",

@@ -1,5 +1,5 @@
 export const URLS = {
-    URL_BASE: "https://35cd37d71b6d.ngrok-free.app",
+    URL_BASE: "https://undeft-psychomotor-marla.ngrok-free.dev",
     INICIAR_SESION: "/publico/accesos/signin",
     REGISTRO: "/publico/registros/user",
 

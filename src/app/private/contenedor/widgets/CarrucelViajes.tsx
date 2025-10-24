@@ -5,6 +5,7 @@ import { URLS } from "../../../../utilities/dominios/urls";
 import { ServicioGet } from "../../../../services/ServicioGet";
 import { ModalPublicacion } from "../../../shared/components/modalPublicacion";
 import { Box, Typography } from "@mui/material";
+import { ImagenConHeader } from "../../../../utilities/funciones/imagenConHeader";
 
 export const CarrucelViajes = () => {
     // Estado para almacenar las publicaciones
@@ -62,7 +63,7 @@ export const CarrucelViajes = () => {
                                 <div className="card-img-top p-3" style={{ height: "200px", overflow: "hidden" }}>
                                     {publicacion.imagenesUrls && publicacion.imagenesUrls.length > 0 ? (
                                         <>
-                                            <img
+                                            <ImagenConHeader
                                                 src={URLS.URL_BASE + publicacion.imagenesUrls[0]}
                                                 alt="Publicación"
                                                 className="img-fluid w-100 h-100 rounded-3"
@@ -78,7 +79,7 @@ export const CarrucelViajes = () => {
                                             )}
                                         </>
                                     ) : publicacion.imagenUrl ? (
-                                        <img
+                                        <ImagenConHeader
                                             src={URLS.URL_BASE + publicacion.imagenUrl}
                                             alt="Publicación"
                                             className="img-fluid w-100 h-100 rounded-3"

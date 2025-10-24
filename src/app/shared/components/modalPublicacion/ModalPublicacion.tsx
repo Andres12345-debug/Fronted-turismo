@@ -7,6 +7,7 @@ import { useEffect, useMemo } from "react";
 import { useTheme } from "@mui/material/styles";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { toEmbeddableUrl } from "../../../../utilities/video/embed";
+import { ImagenConHeader } from "../../../../utilities/funciones/imagenConHeader";
 
 interface ModalPublicacionProps {
   show: boolean;
@@ -149,7 +150,7 @@ export const ModalPublicacion: React.FC<ModalPublicacionProps> = ({
                 renderThumbs={() =>
                   gallery.map((item, idx) =>
                     item.kind === "image" ? (
-                      <img
+                      <ImagenConHeader
                         key={`thumb-${idx}`}
                         src={item.url}
                         alt={item.alt}

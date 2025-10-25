@@ -6,17 +6,28 @@ interface Props {
     alt: string;
     className?: string;
     style?: React.CSSProperties;
+    loading?: "lazy" | "eager";
+    decoding?: "async" | "sync" | "auto";
+    itemProp?: string;
 }
 
-export const ImagenConHeader = ({ src, alt, className, style }: Props) => {
+export const ImagenConHeader = ({ 
+    src, 
+    alt, 
+    className, 
+    style,
+    loading,
+    decoding,
+    itemProp 
+}: Props) => {
     const [imageSrc, setImageSrc] = useState<string>("");
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
 
     useEffect(() => {
         const cargarImagen = async () => {
             try {
-                setLoading(true);
+                setIsLoading(true);
                 setError(false);
 
                 const response = await fetch(src, {
@@ -34,7 +45,7 @@ export const ImagenConHeader = ({ src, alt, className, style }: Props) => {
                 console.error('Error cargando imagen:', err);
                 setError(true);
             } finally {
-                setLoading(false);
+                setIsLoading(false);
             }
         };
 
@@ -50,7 +61,7 @@ export const ImagenConHeader = ({ src, alt, className, style }: Props) => {
         };
     }, [src]);
 
-    if (loading) {
+    if (isLoading) {
         return (
             <div className={className} style={style}>
                 <div className="d-flex justify-content-center align-items-center h-100 bg-light">
@@ -70,5 +81,15 @@ export const ImagenConHeader = ({ src, alt, className, style }: Props) => {
         );
     }
 
-    return <img src={imageSrc} alt={alt} className={className} style={style} />;
+    return (
+        <img 
+            src={imageSrc} 
+            alt={alt} 
+            className={className} 
+            style={style}
+            loading={loading}
+            decoding={decoding}
+            itemProp={itemProp}
+        />
+    );
 };

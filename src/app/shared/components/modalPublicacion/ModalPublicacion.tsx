@@ -181,7 +181,7 @@ export const ModalPublicacion: React.FC<ModalPublicacionProps> = ({
                 {gallery.map((item, i) =>
                   item.kind === "image" ? (
                     <div key={`slide-img-${i}`} className="d-flex justify-content-center">
-                      <img
+                      <ImagenConHeader
                         src={item.url}
                         alt={item.alt}
                         className="img-fluid"

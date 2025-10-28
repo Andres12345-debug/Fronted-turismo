@@ -4,6 +4,7 @@ import { URLS } from "../../utilities/dominios/urls";
 import { ServicioGet } from "../../services/ServicioGet";
 import { Publicacion } from "../../models/Publicacion";
 import { Modal } from "react-bootstrap"; // Asegúrate de tener Bootstrap instalado
+import { ImagenConHeader } from "../../utilities/funciones/imagenConHeader";
 
 export const Bienvenida = () => {
     const token: any = localStorage.getItem("TOKEN_AUTORIZACION");
@@ -25,7 +26,7 @@ export const Bienvenida = () => {
         } catch (error) {
             console.error("Error al obtener publicaciones:", error);
         }
-    }; 
+    };
 
     useEffect(() => {
         consultarPublicaciones();
@@ -57,7 +58,7 @@ export const Bienvenida = () => {
                             <div className="card shadow-sm" onClick={() => handleShowModal(publicacion)}>
                                 <div className="card-img-top" style={{ height: "200px", overflow: "hidden" }}>
                                     {publicacion.imagenUrl ? (
-                                        <img
+                                        <ImagenConHeader
                                             src={URLS.URL_BASE + publicacion.imagenUrl}
                                             alt="Publicación"
                                             className="img-fluid w-100 h-100"
@@ -98,7 +99,7 @@ export const Bienvenida = () => {
                 <Modal.Body>
                     <div className="d-flex flex-column align-items-center text-center">
                         {selectedPublicacion?.imagenUrl && (
-                            <img
+                            <ImagenConHeader
                                 src={URLS.URL_BASE + selectedPublicacion.imagenUrl}
                                 alt="Imagen de la publicación"
                                 className="img-fluid mb-3"
@@ -107,7 +108,7 @@ export const Bienvenida = () => {
                         )}
                         <div className="mt-3">
                             <h5 className="fw-bold">{selectedPublicacion?.tituloPublicacion}</h5>
-                            <p>{selectedPublicacion?.descripcionPublicacion}</p>                            
+                            <p>{selectedPublicacion?.descripcionPublicacion}</p>
                         </div>
                     </div>
                 </Modal.Body>

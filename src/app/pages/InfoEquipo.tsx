@@ -37,22 +37,23 @@ import maria_camila from "../../assets/team/maria_camila.jpg";
 import daniel_delgado from "../../assets/team/daniel_delgado.jpg";
 import angie_villamizar from "../../assets/team/angie_villamizar.jpg";
 import nestor_olaya from "../../assets/team/nestor_olaya.jpg";
+import arnold_velandia from "../../assets/team/arnold_velandia.jpg";
 
 const team = [
   { name: "JUAN DAVID HERRERA FOCAZZIO", bio: "Soy una persona apasionada por la tecnología, caracterizada por su amabilidad, disposición para ayudar y un fuerte sentido de la responsabilidad en cada tarea que realiza.", photo: juan_david },
   { name: "LILIA SMITH ORTIZ", bio: "Ella es una instructora linda y carismática, que transmite confianza y entusiasmo en todo momento.", photo: lilia_smith },
   { name: "Ángel Raúl Sanabria Orjuela", bio: "Tengo 16 años. Soy amable, respetuoso y compañerista. Me gusta el deporte.", photo: angel_raul },
-  { name: "LISBETH MARIANA CHAPARRO SUÁREZ", bio: "Tengo 16 años. Soy una persona creativa, amable, sensible, muy comprensible y en mis tiempos libres me gusta pasar tiempo con las personas que más quiero.", photo: lisbeth_chaparro },
-  { name: "Luz Adriana Flores Pérez", bio: "Tengo 16 años, soy una persona amable, empática y me gusta compartir con las demás personas.", photo: luz_adriana },
+  { name: "LISBETH MARIANA CHAPARRO SUÁREZ", bio: "Tengo 17 años. Soy una persona creativa, amable, sensible, muy comprensible y en mis tiempos libres me gusta pasar tiempo con las personas que más quiero.", photo: lisbeth_chaparro },
+  { name: "Luz Adriana Florez Pérez", bio: "Tengo 17 años, soy una persona amable, empática y me gusta compartir con las demás personas.", photo: luz_adriana },
   { name: "Danna Gabriela Medina Figueroa", bio: "Tengo 17 años, soy una persona amable, respetuosa, amigable y me gusta compartir con las demás personas.", photo: danna_gabriela },
-  { name: "Lizeth Yurany Vega Flores", bio: "Tengo 18 años me considero una persona amable respetuosa honesta y responsable me gusta ayudar a los demás.", photo: lizeth_yurany },
-  { name: "María Isabel Espinosa Flores", bio: "Tengo 18 años y me considero una persona amable respetuosa responsable y honesta me gusta ayudarle en lo que pueda a los demás.", photo: maria_isabel },
+  { name: "Lizeth Yurany Vega Florez", bio: "Tengo 18 años me considero una persona amable respetuosa honesta y responsable me gusta ayudar a los demás.", photo: lizeth_yurany },
+  { name: "María Isabel Espinosa Florez", bio: "Tengo 18 años y me considero una persona amable respetuosa responsable y honesta me gusta ayudarle en lo que pueda a los demás.", photo: maria_isabel },
   { name: "JOSÉ MANUEL MÉNDEZ SUÁREZ", bio: "Tengo 17 años soy alguien amable, colaborador y fraterno me gusta dibujar y cocinar.", photo: jose_manuel },
   { name: "Tatiana Esperanza Pérez Chasoy", bio: "Me considero una persona amable, con buena actitud y deseos de superación.", photo: tatiana_perez },
   { name: "Geimy Zarith Bermúdez Prada", bio: "Soy estudiante del COLDINI, soy aprendiz del Sena en Operación Turística Local y me caracterizó por ser una estudiante dedicada y motivada a alcanzar mis metas.", photo: geimy_bermudez },
   { name: "Angy Paola Estupiñán Romero", bio: "Hola, tengo 17 años, nací el 29 de agosto del 2008, soy una persona responsable.", photo: angy_paola },
   { name: "Nicolás Blanco Chaparro", bio: "Tengo 17 años, nací en Málaga Santander el 27 de agosto de 2008, soy una persona amable, respetuosa y compañerista.", photo: nicolas_blanco },
-  { name: "Ivonne Yolima Garzón Hernández", bio: "Es una joven penosa, amable, una persona positiva, trata de ayudar en lo que sabe.", photo: ivonne_garzon },
+  { name: "Ivonne Yolima Garzón Hernández", bio: "tiene 16 años, Es una joven penosa, amable, una persona positiva, trata de ayudar en lo que sabe.", photo: ivonne_garzon },
   { name: "María José Panqueva Aponte", bio: "Soy una joven responsable, respetuosa, amable, sencilla con sueños, errores, aprendizajes y ganas de crecer.", photo: maria_jose },
   { name: "Isabela Mariño Bermúdez", bio: "Es una joven amable, sencilla, responsable, divertida. Es una joven que sigue adelante así se le atraviese muchos obstáculos, ella ayuda a las personas que lo necesitan y tiene gran capacidad de escuchar.", photo: isabela_marino },
   { name: "Yeison Fernando Manrique Manrique", bio: "Es un joven carismático y alegre, que expresa su pasión por la danza con cada sonrisa.", photo: yeison_manrique },
@@ -64,6 +65,7 @@ const team = [
   { name: "Daniel Eduardo Delgado Barón", bio: "Es un joven alegre y amable, colaborativo y servidor.", photo: daniel_delgado },
   { name: "Angie Mariana Villamizar Dueñas", bio: "Es una niña carismática y alegre, que irradia frescura y orgullo Capitanejano.", photo: angie_villamizar },
   { name: "Néstor Iván Olaya Paredes", bio: "Soy responsable, creativa y con gran disposición para trabajar en equipo, destacándose por su actitud positiva y sus ganas de aprender.", photo: nestor_olaya },
+  { name: "Arnold Velandia Mateus", bio: "Administrador Turístico y Hotelero Guía de Turismo Profesional Gestor Cultural", photo: arnold_velandia },
 ];
 
 const EquipoTurismoOnceColdini = () => {

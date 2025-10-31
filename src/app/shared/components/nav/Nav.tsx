@@ -6,29 +6,35 @@ import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import { alpha, styled } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
-import RestoreIcon from '@mui/icons-material/Restore';
-import FolderIcon from '@mui/icons-material/Person';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { DarkMode, LightMode } from '@mui/icons-material';
 import { useThemeContext } from '../../components/Theme/ThemeContext';
 import { Box, Typography } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import GroupsIcon from '@mui/icons-material/Groups';
 import InfoIcon from '@mui/icons-material/Info';
-
-// ✅ IMPORTA TU LOGO
-import logo from '../../../../assets/img/LogoMenu/logoOficial.png'; // cambia la ruta si es necesario
+import logo from '../../../../assets/img/LogoMenu/logoOficial.png';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  borderRadius: 20,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': { backgroundColor: alpha(theme.palette.common.white, 0.25) },
-  marginLeft: theme.spacing(3),
-  marginRight: theme.spacing(3),
+  borderRadius: 30,
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? alpha(theme.palette.grey[200], 0.9)
+      : alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.grey[300], 1)
+        : alpha(theme.palette.common.white, 0.25),
+  },
   width: '100%',
-  [theme.breakpoints.up('sm')]: { width: 'auto' },
+  maxWidth: 600,
+  height: 45,
+  transition: 'all 0.3s ease',
+  boxShadow:
+    theme.palette.mode === 'light'
+      ? '0 2px 6px rgba(0,0,0,0.1)'
+      : '0 2px 6px rgba(255,255,255,0.1)',
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -42,14 +48,13 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
+  color: theme.palette.mode === 'light' ? theme.palette.text.primary : '#fff',
   width: '100%',
   '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
+    padding: theme.spacing(1.5, 1, 1.5, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(5)})`,
+    fontSize: '1.05rem',
     width: '100%',
-    [theme.breakpoints.up('md')]: { width: '40ch' },
   },
 }));
 
@@ -57,10 +62,8 @@ export default function TopNavigation() {
   const { mode, toggleTheme } = useThemeContext();
   const navigate = useNavigate();
   const location = useLocation();
-
   const [busqueda, setBusqueda] = React.useState('');
 
-  // Debounce + navegación
   React.useEffect(() => {
     const q = busqueda.trim();
     if (!q) return;
@@ -89,14 +92,21 @@ export default function TopNavigation() {
               : '0 2px 12px rgba(0,0,0,0.35)',
         }}
       >
-        <Toolbar sx={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 2, alignItems: 'center' }}>
-          {/* ✅ IZQUIERDA: LOGO + MARCA */}
-          <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          {/* 🔹 IZQUIERDA: LOGO + ICONOS */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <Box
               component={Link}
               to="/land"
               sx={{
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
                 textDecoration: 'none',
                 gap: 1,
@@ -108,31 +118,88 @@ export default function TopNavigation() {
                 src={logo}
                 alt="Logo"
                 sx={{
-                  height: { xs: 32, sm: 36, md: 40 }, // responsive
+                  height: { xs: 60, sm: 70, md: 85 },
                   width: 'auto',
-                  display: 'block',
                   objectFit: 'contain',
-                  borderRadius: 1.5,
+                  borderRadius: 2,
                 }}
               />
-              {/* Texto de marca (oculto en xs) */}
-              <Typography
-                variant="h6"
-                noWrap
-                sx={{
-                  display: { xs: 'none', sm: 'block' },
-                  fontWeight: 700,
-                  color: 'text.primary',
-                  letterSpacing: 0.2,
-                }}
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  sx={{
+                    fontWeight: 700,
+                    color: 'text.primary',
+                    letterSpacing: 0.2,
+                    lineHeight: 1.1,
+                    display: { xs: 'none', sm: 'block' },
+                  }}
+                >
+                  Sencaptur
+                </Typography>
+                <Typography
+                  variant="subtitle2"
+                  noWrap
+                  sx={{
+                    display: { xs: 'none', sm: 'block' },
+                    fontWeight: 500,
+                    color:
+                      mode === 'light'
+                        ? 'text.primary'
+                        : 'rgba(255,255,255,0.9)',
+                    fontSize: '0.95rem',
+                    mt: 0.3,
+                  }}
+                >
+                  Capture el sentimiento del momento
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                ml: 1.5,
+                '& .MuiSvgIcon-root': {
+                  fontSize: 28,
+                  color: (theme) =>
+                    theme.palette.mode === 'light'
+                      ? theme.palette.text.primary
+                      : 'rgba(255,255,255,0.9)',
+                },
+              }}
+            >
+              <IconButton
+                component={Link}
+                to="/land/equipo"
+                color="inherit"
+                aria-label="Equipo"
               >
-                Sencaptur
-              </Typography>
+                <GroupsIcon />
+              </IconButton>
+
+              <IconButton
+                component={Link}
+                to="/land/acerca-de"
+                color="inherit"
+                aria-label="Acerca de nosotros"
+              >
+                <InfoIcon />
+              </IconButton>
             </Box>
           </Box>
 
-          {/* ✅ CENTRO: BUSCADOR */}
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          {/* 🔹 CENTRO: BUSCADOR */}
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: 'flex',
+              justifyContent: 'center',
+              mx: 2,
+            }}
+          >
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -146,41 +213,40 @@ export default function TopNavigation() {
             </Search>
           </Box>
 
-          {/* ✅ DERECHA: ICONOS + TEMA */}
+          {/* 🔹 DERECHA: PERFIL / MODO */}
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: { xs: 0.5, sm: 1 },
+              gap: { xs: 0.8, sm: 1.2 },
               '& .MuiSvgIcon-root': {
                 color: (theme) =>
                   theme.palette.mode === 'light'
-                    ? theme.palette.text.secondary
+                    ? theme.palette.text.primary
                     : theme.palette.common.white,
               },
             }}
           >
-            <IconButton component={Link} to="/land/equipo" color="inherit" aria-label="Equipo">
-              <GroupsIcon />
-            </IconButton>
-            <IconButton component={Link} to="/login" color="inherit" target="_blank" aria-label="Perfil">
+            <IconButton
+              component={Link}
+              to="/login"
+              color="inherit"
+              aria-label="Perfil"
+            >
               <AccountCircleIcon />
             </IconButton>
-            <IconButton component={Link} to="/land/acerca-de" color="inherit" aria-label="Favoritos">
-              <InfoIcon />
-            </IconButton>
-            <IconButton component={Link} to="/land" color="inherit" aria-label="Inicio">
-              <HomeIcon />
-            </IconButton>
 
-            <IconButton onClick={toggleTheme} color="inherit" aria-label="Cambiar tema">
+            <IconButton
+              onClick={toggleTheme}
+              color="inherit"
+              aria-label="Cambiar tema"
+            >
               {mode === 'light' ? <DarkMode /> : <LightMode />}
             </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
 
-      {/* Offset para que el contenido no quede debajo del AppBar */}
       <Toolbar />
     </>
   );

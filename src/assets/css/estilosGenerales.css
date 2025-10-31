@@ -1,155 +1,172 @@
-/* Animación de salto */
-@keyframes jump {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
+import { jwtDecode } from "jwt-decode";
+import { URLS } from "../../utilities/dominios/urls";
+import { ServicioGet } from "../../services/ServicioGet";
+import { useEffect, useState } from "react";
+import { Publicacion } from "../../models/Publicacion";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { ModalPublicacion } from "../../app/shared/components/modalPublicacion/ModalPublicacion";
 
-.jump {
-  animation: jump 1s infinite;
-}
+export const Publicaciones = () => {
+    const [arrPubli, setArrPubli] = useState<Publicacion[]>([]);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedPublicacion, setSelectedPublicacion] = useState<Publicacion | null>(null);
+    const [aspectRatios, setAspectRatios] = useState<Record<number, "horizontal" | "vertical">>({});
 
-/* Animación de giro */
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+    const consultarPublicaciones = async () => {
+        const urlServicio = URLS.URL_BASE + URLS.LISTAR_PUBLICACION_PUBLICA;
+        try {
+            const resultado = await ServicioGet.peticionGetPublica(urlServicio);
+            setArrPubli(Array.isArray(resultado) ? resultado : []);
+        } catch (error) {
+            console.error("Error al obtener publicaciones:", error);
+        }
+    };
 
-.spin {
-  animation: spin 2s linear infinite;
-}
+    useEffect(() => {
+        consultarPublicaciones();
+    }, []);
 
-/* Animación de desvanecimiento */
-@keyframes fade {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
+    const handleShowModal = (publicacion: Publicacion) => {
+        setSelectedPublicacion(publicacion);
+        setShowModal(true);
+    };
 
-.fade {
-  animation: fade 1s ease-in-out;
-}
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedPublicacion(null);
+    };
 
-/* Animación de escalado */
-@keyframes scale {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-}
+    const handleVideoLoad = (index: number, video: HTMLVideoElement) => {
+        const ratio = video.videoWidth / video.videoHeight;
+        const isHorizontal = ratio >= 1;
+        setAspectRatios(prev => ({
+            ...prev,
+            [index]: isHorizontal ? "horizontal" : "vertical",
+        }));
+    };
 
-.scale {
-  animation: scale 1s infinite;
-}
+    const getAspectClass = (index: number) => {
+        const ratio = aspectRatios[index];
+        return ratio === "vertical" ? "aspect-vertical" : "aspect-horizontal";
+    };
 
-/* Animación de deslizamiento hacia la derecha */
-@keyframes slide-right {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
+    return (
+        <div className="container mt-5">
+            {/* ✅ CSS embebido */}
+            <style>
+                {`
+                /* 🔹 Mantener relación de aspecto horizontal 16:9 */
+                .aspect-horizontal {
+                    position: relative;
+                    width: 100%;
+                    padding-top: 56.25%;
+                    overflow: hidden;
+                }
 
-.slide-right {
-  animation: slide-right 1s ease-out;
-}
+                /* 🔹 Relación de aspecto vertical 9:16 */
+                .aspect-vertical {
+                    position: relative;
+                    width: 100%;
+                    padding-top: 177.77%;
+                    overflow: hidden;
+                }
 
-/* Animación de deslizamiento hacia la izquierda */
-@keyframes slide-left {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
+                .aspect-horizontal img,
+                .aspect-vertical img,
+                .aspect-horizontal video,
+                .aspect-vertical video {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 0.75rem;
+                }
 
-.slide-left {
-  animation: slide-left 1s ease-out;
-}
+                /* 🔹 En móviles, los videos verticales ocupan toda la pantalla horizontal */
+                @media (max-width: 768px) {
+                    .aspect-vertical {
+                        width: 100%;
+                        padding-top: 177.77%;
+                    }
+                    .aspect-horizontal {
+                        width: 100%;
+                        padding-top: 56.25%;
+                    }
+                }
+                `}
+            </style>
 
-/* Animación de deslizamiento hacia arriba */
-@keyframes slide-up {
-  0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
+            <div className="row gy-4">
+                <h3 className="text-center">Todos</h3>
 
-.slide-up {
-  animation: slide-up 1s ease-out;
-}
+                {arrPubli.length > 0 ? (
+                    arrPubli.map((publicacion, index) => (
+                        <div className="col-md-4" key={index}>
+                            <div
+                                className="card shadow-sm bg-dark-subtle"
+                                style={{ cursor: "pointer" }}
+                                onClick={() => handleShowModal(publicacion)}
+                            >
+                                <div className={`card-img-top p-3 ${getAspectClass(index)}`}>
+                                    {publicacion.videoUrl ? (
+                                        <video
+                                            src={URLS.URL_BASE + publicacion.videoUrl}
+                                            className="w-100 h-100 rounded-3"
+                                            style={{ objectFit: "cover" }}
+                                            controls
+                                            onLoadedMetadata={(e) => handleVideoLoad(index, e.currentTarget)}
+                                        />
+                                    ) : publicacion.imagenesUrls && publicacion.imagenesUrls.length > 0 ? (
+                                        <img
+                                            src={URLS.URL_BASE + publicacion.imagenesUrls[0]}
+                                            alt="Publicación"
+                                            className="img-fluid w-100 h-100 rounded-3"
+                                            style={{ objectFit: "cover" }}
+                                        />
+                                    ) : publicacion.imagenUrl ? (
+                                        <img
+                                            src={URLS.URL_BASE + publicacion.imagenUrl}
+                                            alt="Publicación"
+                                            className="img-fluid w-100 h-100 rounded-3"
+                                            style={{ objectFit: "cover" }}
+                                        />
+                                    ) : (
+                                        <div className="d-flex justify-content-center align-items-center h-100 bg-secondary text-white">
+                                            Sin Imagen
+                                        </div>
+                                    )}
+                                </div>
 
-/* Animación de deslizamiento hacia abajo */
-@keyframes slide-down {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
+                                <div className="card-body">
+                                    <h5 className="card-title text-truncate">{publicacion.tituloPublicacion}</h5>
+                                    <p className="card-text">{publicacion.descripcionPublicacion}</p>
+                                    <small className="text-muted">
+                                        Publicado el{" "}
+                                        {new Date(publicacion.fechaCreacionPublicacion).toLocaleDateString("es-ES", {
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                        })}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="col-12 text-center">
+                        <p className="text-muted">No hay publicaciones disponibles en este momento.</p>
+                    </div>
+                )}
+            </div>
 
-.slide-down {
-  animation: slide-down 1s ease-out;
-}
+            <ModalPublicacion
+                show={showModal}
+                handleClose={handleCloseModal}
+                publicacion={selectedPublicacion}
+            />
+        </div>
+    );
+};
 
-/* Animación de parpadeo */
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-.blink {
-  animation: blink 1s infinite;
-}
-
-/* CSS DE PALETA DE COLORES */
-.naranjaLetras {
-  color: #ff914d;
-}
-.naranjaLetrasMasOscuras {
-  color: #cf6625;
-}
-.naranjaFondo {
-  background-color: #ff914d;
-}
-.BackgroundPublico{
-  background-color: rgba(184, 184, 184, 0.1);
-
-}
-
-h1 {
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
-p {
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
-
-.textos{
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-
-}

@@ -40,24 +40,66 @@ export default function AcercaDeNosotros() {
         {/* Hero */}
         <Box sx={{ textAlign: "center", mb: 5 }}>
           <Typography
-            variant="overline"
-            sx={{ color: "text.primary", letterSpacing: 2, opacity: 0.8 }}
+            variant="h3" // 🔹 ahora es grande como el logo
+            sx={{
+              color: "text.primary",
+              fontWeight: 800,
+              letterSpacing: 1.2,
+              opacity: 0.95,
+              fontSize: { xs: "2rem", md: "3rem" },
+              textTransform: "uppercase",
+              position: "relative",
+              display: "inline-block",
+              pb: 1.5,
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                bottom: 0,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "60%",
+                height: "4px",
+                borderRadius: "2px",
+                backgroundColor:
+                  theme.palette.mode === "light"
+                    ? theme.palette.primary.main
+                    : "#4FC3F7",
+              },
+            }}
           >
             Acerca de nosotros
           </Typography>
-          <Typography
-            variant="h3"
-            component="h1"
-            sx={{ color: "text.primary", fontWeight: 800, mt: 1, mb: 2 }}
-          >
-            Sencaptur
-          </Typography>
+
+          {/* 🔹 Imagen del logo principal */}
+          <Box
+            component="img"
+            src="/logoOficial.png"
+            alt="Logo Sencaptur"
+            sx={{
+              display: "block",
+              mx: "auto",
+              mt: 3,
+              mb: 3,
+              width: "100%",
+              maxWidth: 700,
+              height: "auto",
+              borderRadius: 6,
+              boxShadow: "0 6px 18px rgba(0,0,0,0.3)",
+              transition: "transform 0.4s ease, box-shadow 0.4s ease",
+              "&:hover": {
+                transform: "scale(1.02)",
+                boxShadow: "0 8px 22px rgba(0,0,0,0.35)",
+              },
+            }}
+          />
+
           <Typography
             variant="body2"
             sx={{
               color: textColor,
               maxInlineSize: 960,
               mx: "auto",
+              fontSize: { xs: "0.95rem", md: "1rem" },
             }}
           >
             Plataforma digital que utiliza el video para capturar y compartir
@@ -84,7 +126,7 @@ export default function AcercaDeNosotros() {
             >
               Introducción
             </Typography>
-            <Typography variant="body2" sx={{ color: textColor }}>
+            <Typography variant="body2" sx={{ color: textColor, fontSize: { xs: "0.95rem", md: "1rem" } }}>
               Sencaptur es una plataforma digital que utiliza el formato de
               vídeo como medio principal para capturar y compartir experiencias
               turísticas y culturales significativas en Capitanejo y sus
@@ -112,7 +154,7 @@ export default function AcercaDeNosotros() {
             >
               Misión
             </Typography>
-            <Typography variant="body2" sx={{ color: textColor }}>
+            <Typography variant="body2" sx={{ color: textColor, fontSize: { xs: "0.95rem", md: "1rem" } }}>
               Nuestra misión es proporcionar una plataforma para capturar,
               compartir y descubrir contenido turístico y cultural emocionalmente
               relevante a través de vídeos, y complementar esta experiencia con
@@ -138,7 +180,7 @@ export default function AcercaDeNosotros() {
             >
               Visión
             </Typography>
-            <Typography variant="body2" sx={{ color: textColor }}>
+            <Typography variant="body2" sx={{ color: textColor, fontSize: { xs: "0.95rem", md: "1rem" } }}>
               Nuestra visión es ser una plataforma líder en la promoción de
               experiencias turísticas y culturales auténticas a través de
               contenido audiovisual de alta calidad, y en la gestión y difusión
@@ -158,6 +200,7 @@ export default function AcercaDeNosotros() {
               color: textColor,
               textAlign: "center",
               mt: 3,
+              fontSize: { xs: "0.95rem", md: "1rem" },
             }}
           >
             ¿Quieres saber más o colaborar con Sencaptur? Ponte en contacto con
@@ -176,7 +219,6 @@ export default function AcercaDeNosotros() {
           }}
         >
           <CardContent sx={{ p: { xs: 3, md: 4 }, textAlign: "center" }}>
-            {/* 🔹 Fila de logos */}
             <Box
               sx={{
                 display: "flex",
@@ -191,18 +233,6 @@ export default function AcercaDeNosotros() {
                 component="img"
                 src="/coldini_escudo.png"
                 alt="Logo institucion 1"
-                sx={{
-                  width: 120,
-                  height: "auto",
-                  opacity: 0.95,
-                  transition: "transform 0.3s ease, opacity 0.3s ease",
-                  "&:hover": { transform: "scale(1.05)", opacity: 1 },
-                }}
-              />
-              <Box
-                component="img"
-                src="/cat_colegios.png"
-                alt="Logo institución 2"
                 sx={{
                   width: 120,
                   height: "auto",
@@ -233,7 +263,7 @@ export default function AcercaDeNosotros() {
                 mb: 1,
               }}
             >
-              Instituciones colaboradoras: COLDINI, CAT,    SENA
+              Instituciones colaboradoras: COLDINI y SENA
             </Typography>
 
             <Typography
@@ -242,13 +272,14 @@ export default function AcercaDeNosotros() {
                 color: textColor,
                 maxWidth: 600,
                 mx: "auto",
+                fontSize: { xs: "0.95rem", md: "1rem" },
               }}
             >
               Estas instituciones han brindado su respaldo y colaboración en el desarrollo de este
-  proyecto, aportando recursos, orientación y acompañamiento para fortalecer la innovación
-  tecnológica y la promoción del turismo local. Su participación refleja el compromiso
-  conjunto con el crecimiento educativo, cultural y social de la región, impulsando el
-  talento joven y las iniciativas que destacan las riquezas de Capitanejo y sus alrededores.
+              proyecto, aportando recursos, orientación y acompañamiento para fortalecer la innovación
+              tecnológica y la promoción del turismo local. Su participación refleja el compromiso
+              conjunto con el crecimiento educativo, cultural y social de la región, impulsando el
+              talento joven y las iniciativas que destacan las riquezas de Capitanejo y sus alrededores.
             </Typography>
           </CardContent>
         </Card>

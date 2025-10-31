@@ -1,0 +1,83 @@
+.publicaciones-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* 🔹 Tarjetas base */
+.publicacion-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 600px;
+  width: 100%;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.publicacion-card:hover {
+  transform: scale(1.02);
+}
+
+/* 🔹 Aspectos visuales fijos por tipo */
+.video-normal,
+.img-normal {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.video-short,
+.img-short {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  max-height: 500px;
+}
+
+/* 🔹 Información de texto */
+.publicacion-info {
+  padding: 12px 16px;
+  text-align: center;
+}
+
+.publicacion-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.publicacion-info p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.publicacion-info span {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+/* 🔹 Responsivo para móviles */
+@media (max-width: 768px) {
+  .publicaciones-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .publicacion-card.short {
+    max-width: 90%;
+  }
+
+  .publicacion-card.normal {
+    max-width: 100%;
+  }
+
+  .video-short,
+  .img-short {
+    aspect-ratio: 9 / 16;
+  }
+}
